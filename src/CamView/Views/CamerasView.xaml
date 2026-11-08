@@ -1,0 +1,52 @@
+<UserControl x:Class="CamView.Views.CamerasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:CamView.Localization">
+  <DockPanel>
+    <!-- Header -->
+    <Border x:Name="Header" DockPanel.Dock="Top" BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,0,1" Padding="20,14">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+          <Border Style="{StaticResource SegmentBox}" Margin="0,0,12,0">
+            <StackPanel Orientation="Horizontal">
+              <RadioButton x:Name="Grid1" Style="{StaticResource Segment}" GroupName="grid" Content="1" Tag="1" Checked="GridSize_Checked"/>
+              <RadioButton x:Name="Grid2" Style="{StaticResource Segment}" GroupName="grid" Content="2×2" Tag="2" Checked="GridSize_Checked"/>
+              <RadioButton x:Name="Grid3" Style="{StaticResource Segment}" GroupName="grid" Content="3×3" Tag="3" Checked="GridSize_Checked"/>
+              <RadioButton x:Name="Grid4" Style="{StaticResource Segment}" GroupName="grid" Content="4×4" Tag="4" Checked="GridSize_Checked"/>
+            </StackPanel>
+          </Border>
+          <Button Click="FullScreen_Click">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE740;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,8,0"/>
+              <TextBlock Text="{Binding [FullScreen], Source={x:Static loc:Loc.Instance}}"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+        <TextBlock Style="{StaticResource H1}" Text="{Binding [Cameras], Source={x:Static loc:Loc.Instance}}" VerticalAlignment="Center"/>
+      </DockPanel>
+    </Border>
+
+    <!-- Paging -->
+    <StackPanel x:Name="Pager" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12" Visibility="Collapsed">
+      <Button Content="‹" Padding="12,4" Click="PrevPage_Click"/>
+      <TextBlock x:Name="PageText" VerticalAlignment="Center" Margin="14,0" Foreground="{DynamicResource TextMutedBrush}"/>
+      <Button Content="›" Padding="12,4" Click="NextPage_Click"/>
+    </StackPanel>
+
+    <Grid>
+      <UniformGrid x:Name="Tiles" Margin="10"/>
+
+      <!-- Empty state -->
+      <StackPanel x:Name="Empty" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+        <TextBlock Text="&#xE714;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="40"
+                   Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center"/>
+        <TextBlock Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,14,0,4"
+                   Text="{Binding [NoCameras], Source={x:Static loc:Loc.Instance}}"/>
+        <TextBlock Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center"
+                   Text="{Binding [NoCamerasHint], Source={x:Static loc:Loc.Instance}}"/>
+        <Button Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" Margin="0,18,0,0" Click="OpenSettings_Click"
+                Content="{Binding [GoToSettings], Source={x:Static loc:Loc.Instance}}"/>
+      </StackPanel>
+    </Grid>
+  </DockPanel>
+</UserControl>

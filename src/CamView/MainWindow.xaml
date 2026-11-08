@@ -1,0 +1,77 @@
+<Window x:Class="CamView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CamView.Localization"
+        Width="1280" Height="780" MinWidth="900" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Assets/camview.ico"
+        Background="{DynamicResource BgBrush}"
+        FontFamily="{StaticResource TextFont}" FontSize="14"
+        Foreground="{DynamicResource TextBrush}"
+        PreviewKeyDown="Window_PreviewKeyDown">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition x:Name="SidebarColumn" Width="232"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Left menu -->
+    <Border x:Name="Sidebar" Background="{DynamicResource SidebarBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,1,0">
+      <DockPanel Margin="12,16">
+        <!-- Brand: app icon + configurable company name -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="6,0,0,20">
+          <Image Source="{DynamicResource AppIconImage}" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+          <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+            <TextBlock x:Name="CompanyText" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="15"
+                       TextTrimming="CharacterEllipsis" MaxWidth="160"/>
+            <TextBlock Text="CamView" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- Powered by RHIS (always visible) -->
+        <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0" Padding="8,16,8,4"
+                Cursor="Hand" MouseLeftButtonUp="Rhis_Click" ToolTip="rhis.nl">
+          <StackPanel>
+            <TextBlock Text="{Binding [PoweredBy], Source={x:Static loc:Loc.Instance}}" FontSize="12"
+                       Foreground="{DynamicResource TextMutedBrush}"/>
+            <Image Source="{DynamicResource RhisLogo}" Height="30" HorizontalAlignment="Left" Margin="0,8,0,0"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+          </StackPanel>
+        </Border>
+
+        <StackPanel>
+          <RadioButton x:Name="NavCameras" Style="{StaticResource NavItem}" GroupName="nav" Checked="Nav_Checked">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE714;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,10,0"/>
+              <TextBlock Text="{Binding [Cameras], Source={x:Static loc:Loc.Instance}}"/>
+            </StackPanel>
+          </RadioButton>
+          <TextBlock Text="{Binding [Admin], Source={x:Static loc:Loc.Instance}}" FontSize="11"
+                     Foreground="{DynamicResource TextMutedBrush}" Margin="12,16,0,6"/>
+          <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}" GroupName="nav" Checked="Nav_Checked">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,10,0"/>
+              <TextBlock Text="{Binding [Settings], Source={x:Static loc:Loc.Instance}}"/>
+            </StackPanel>
+          </RadioButton>
+          <RadioButton x:Name="NavInfo" Style="{StaticResource NavItem}" GroupName="nav" Checked="Nav_Checked">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,10,0"/>
+              <TextBlock Text="{Binding [Info], Source={x:Static loc:Loc.Instance}}"/>
+              <Ellipse x:Name="UpdateDot" Width="7" Height="7" Fill="{DynamicResource AccentBrush}" Margin="8,0,0,0"
+                       VerticalAlignment="Center" Visibility="Collapsed"/>
+            </StackPanel>
+          </RadioButton>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <ContentControl x:Name="PageHost" Grid.Column="1" Focusable="False"/>
+
+    <!-- Full screen hint -->
+    <Border x:Name="FullScreenHint" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,16,0,0"
+            Background="#CC000000" CornerRadius="6" Padding="14,8" Visibility="Collapsed" IsHitTestVisible="False">
+      <TextBlock Foreground="White" Text="{Binding [ExitFullScreen], Source={x:Static loc:Loc.Instance}}"/>
+    </Border>
+  </Grid>
+</Window>

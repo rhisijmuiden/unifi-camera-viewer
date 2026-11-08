@@ -1,0 +1,147 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CamView sketch</title>
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#2b2f36;font:14px/1.45 var(--font);color:var(--text);padding:32px}
+.cap{color:#cfd5de;font:600 15px var(--font-display);margin:0 0 10px}
+.win{width:1280px;height:740px;background:var(--bg);border:1px solid #000;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;margin-bottom:36px}
+.tb{height:32px;background:var(--sidebar);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--text-muted);gap:8px}
+.tb img{width:16px}.tb .ctl{margin-left:auto;letter-spacing:18px}
+.body{flex:1;display:flex;min-height:0}
+.side{width:232px;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:16px 12px}
+.brand{display:flex;gap:10px;align-items:center;padding:0 6px 20px}
+.brand img{width:32px}.brand b{font:700 15px var(--font-display);display:block}.brand small{color:var(--text-muted);font-size:12px}
+.nav{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:6px;color:var(--text-muted);margin-bottom:2px}
+.nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav.on{background:var(--panel-2);color:var(--text);box-shadow:inset 3px 0 0 var(--accent)}
+.grp{font-size:11px;letter-spacing:.08em;color:var(--text-muted);padding:16px 12px 6px;text-transform:uppercase}
+.pw{margin-top:auto;border-top:1px solid var(--line);padding:16px 8px 4px;color:var(--text-muted);font-size:12px}
+.pw img{height:30px;display:block;margin-top:8px}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.head h1{font:600 22px var(--font-display);margin:0;flex:1}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.seg span{padding:6px 11px;color:var(--text-muted);font-size:13px}.seg .on{background:var(--panel-2);color:var(--text)}
+.btn{padding:8px 14px;border-radius:6px;font-weight:600;display:inline-block}.p{background:var(--accent);color:var(--on-accent)}.s{background:var(--panel-2);border:1px solid var(--line)}.d{color:var(--error);border:1px solid var(--line)}
+.grid{flex:1;padding:16px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;min-height:0}
+.tile{position:relative;border-radius:6px;border:1px solid var(--line);overflow:hidden;background-size:cover}
+.t1{background:linear-gradient(180deg,#5a6f80 0%,#3c4a55 45%,#2a2f33 46%,#45403a 100%)}
+.t2{background:linear-gradient(160deg,#30363d,#1d2329 50%,#4b4f50 51%,#2c2f31)}
+.t3{background:linear-gradient(90deg,#3b3a35 0 18%,#57524a 18% 22%,#3b3a35 22% 60%,#57524a 60% 64%,#3b3a35 64%)}
+.t4{background:#14181d}
+.tile .n{position:absolute;left:12px;bottom:10px;font-weight:600;color:#fff;text-shadow:0 1px 3px #000}
+.tile .ts{position:absolute;right:12px;bottom:10px;color:#e6e6e6;font:12px Consolas,monospace;text-shadow:0 1px 3px #000}
+.live{position:absolute;left:12px;top:12px;background:var(--live);color:#fff;font:700 11px var(--font);padding:2px 7px;border-radius:4px;letter-spacing:.06em}
+.st{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--warn)}
+.st small{color:var(--text-muted)}
+.tile .x{position:absolute;right:10px;top:10px;color:#fff;opacity:.8;font-size:12px;background:#0008;padding:3px 7px;border-radius:4px}
+.pane{padding:20px;display:flex;gap:20px;flex:1;min-height:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card h2{font:600 16px var(--font-display);margin:0 0 14px}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row .g{flex:1}.row .g small{display:block;color:var(--text-muted);font:12px Consolas,monospace}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+label{display:block;font-size:12px;color:var(--text-muted);margin:12px 0 5px}
+.in{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:var(--text)}
+.in.f{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.hint{font-size:12px;color:var(--text-muted);margin-top:6px}
+.tog{display:inline-block;width:36px;height:20px;border-radius:10px;background:var(--accent);position:relative;vertical-align:middle}.tog:after{content:"";position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--on-accent)}
+.kv{display:grid;grid-template-columns:150px 1fr;row-gap:10px;font-size:14px}.kv span{color:var(--text-muted)}
+.badge{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);color:var(--accent)}
+.upd{background:var(--panel-2);border:1px solid var(--accent);border-radius:6px;padding:12px;margin-top:16px;display:flex;align-items:center;gap:12px}
+</style></head><body>
+
+<!-- ICONS -->
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></symbol>
+<symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+<symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+</defs></svg>
+
+<p class="cap">1 · Cameras: live overzicht (2×2 raster, ook 1, 3×3 of 4×4). Dubbelklik op een beeld = volledig scherm.</p>
+<div class="win"><div class="tb"><img src="assets/camview-icon.svg">CamView · Kantoor Hoorn BV<span class="ctl">— ☐ ✕</span></div><div class="body">
+<div class="side">
+ <div class="brand"><img src="assets/camview-icon.svg"><div><b>Kantoor Hoorn BV</b><small>CamView</small></div></div>
+ <div class="nav on"><svg><use href="#i-cam"/></svg>Cameras</div>
+ <div class="grp">Admin</div>
+ <div class="nav"><svg><use href="#i-set"/></svg>Settings</div>
+ <div class="nav"><svg><use href="#i-info"/></svg>Info</div>
+ <div class="pw">Powered by<img src="assets/rhis-logo-wit.svg" alt="RHIS"></div>
+</div>
+<div class="main">
+ <div class="head"><h1>Cameras</h1><div class="seg"><span>1</span><span class="on">2×2</span><span>3×3</span><span>4×4</span></div><span class="btn s">⛶ Full screen</span></div>
+ <div class="grid">
+  <div class="tile t1"><span class="live">LIVE</span><span class="x">⛶</span><span class="n">Entrance</span><span class="ts">23:41:07</span></div>
+  <div class="tile t2"><span class="live">LIVE</span><span class="n">Parking</span><span class="ts">23:41:07</span></div>
+  <div class="tile t3"><span class="live">LIVE</span><span class="n">Warehouse</span><span class="ts">23:41:07</span></div>
+  <div class="tile t4"><div class="st">⟳ Reconnecting…<small>Office is only reachable on the office network</small></div><span class="n">Reception</span></div>
+ </div>
+</div></div></div>
+
+<p class="cap">2 · Settings: camera's toevoegen met de RTSPS-link uit UniFi Protect, bedrijfsnaam, taal en thema.</p>
+<div class="win"><div class="tb"><img src="assets/camview-icon.svg">CamView · Kantoor Hoorn BV<span class="ctl">— ☐ ✕</span></div><div class="body">
+<div class="side">
+ <div class="brand"><img src="assets/camview-icon.svg"><div><b>Kantoor Hoorn BV</b><small>CamView</small></div></div>
+ <div class="nav"><svg><use href="#i-cam"/></svg>Cameras</div>
+ <div class="grp">Admin</div>
+ <div class="nav on"><svg><use href="#i-set"/></svg>Settings</div>
+ <div class="nav"><svg><use href="#i-info"/></svg>Info</div>
+ <div class="pw">Powered by<img src="assets/rhis-logo-wit.svg" alt="RHIS"></div>
+</div>
+<div class="main">
+ <div class="head"><h1>Settings</h1><span class="btn p">Save</span></div>
+ <div class="pane">
+  <div class="card" style="flex:1.3">
+   <h2>Cameras</h2>
+   <div class="row"><span class="dot"></span><div class="g">Entrance<small>rtsps://192.168.1.1:7441/a1B2c3D4…</small></div><span class="btn s">Edit</span><span class="btn d">Remove</span></div>
+   <div class="row"><span class="dot"></span><div class="g">Parking<small>rtsps://192.168.1.1:7441/e5F6g7H8…</small></div><span class="btn s">Edit</span><span class="btn d">Remove</span></div>
+   <div class="row"><span class="dot"></span><div class="g">Warehouse<small>rtsps://192.168.1.1:7441/i9J0k1L2…</small></div><span class="btn s">Edit</span><span class="btn d">Remove</span></div>
+   <div class="row"><span class="dot" style="background:var(--warn)"></span><div class="g">Reception<small>rtsps://192.168.1.1:7441/m3N4o5P6…</small></div><span class="btn s">Edit</span><span class="btn d">Remove</span></div>
+   <div style="border-top:1px solid var(--line);margin-top:6px;padding-top:6px">
+    <label>Name</label><div class="in">Back door</div>
+    <label>Stream URL (RTSP / RTSPS)</label><div class="in f">rtsps://192.168.1.1:7441/q7R8s9T0?enableSrtp</div>
+    <div class="hint">UniFi Protect → camera → Settings → Advanced → RTSP → copy link. High, Medium or Low quality.</div>
+    <div style="margin-top:14px;display:flex;gap:10px"><span class="btn p">Add camera</span><span class="btn s">Test stream</span></div>
+   </div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:20px">
+   <div class="card"><h2>General</h2>
+    <label style="margin-top:0">Company name</label><div class="in">Kantoor Hoorn BV</div>
+    <label>Language</label><div class="in">English ▾</div>
+    <label>Theme</label><div class="seg" style="display:inline-flex"><span class="on">Dark</span><span>Light</span><span>System</span></div>
+   </div>
+   <div class="card"><h2>Startup</h2>
+    <div class="row"><div class="g">Start with Windows</div><span class="tog"></span></div>
+    <div class="row"><div class="g">Open in full screen</div><span class="tog" style="background:var(--line)"></span></div>
+   </div>
+  </div>
+ </div>
+</div></div></div>
+
+<p class="cap">3 · Info: versie, controleren op updates, direct bijwerken, kanaal Production of Test.</p>
+<div class="win"><div class="tb"><img src="assets/camview-icon.svg">CamView · Kantoor Hoorn BV<span class="ctl">— ☐ ✕</span></div><div class="body">
+<div class="side">
+ <div class="brand"><img src="assets/camview-icon.svg"><div><b>Kantoor Hoorn BV</b><small>CamView</small></div></div>
+ <div class="nav"><svg><use href="#i-cam"/></svg>Cameras</div>
+ <div class="grp">Admin</div>
+ <div class="nav"><svg><use href="#i-set"/></svg>Settings</div>
+ <div class="nav on"><svg><use href="#i-info"/></svg>Info</div>
+ <div class="pw">Powered by<img src="assets/rhis-logo-wit.svg" alt="RHIS"></div>
+</div>
+<div class="main">
+ <div class="head"><h1>Info</h1></div>
+ <div class="pane">
+  <div class="card" style="flex:1">
+   <h2>CamView</h2>
+   <div class="kv"><span>Version</span><b>1.0.0 <span class="badge">PRODUCTION</span></b><span>Release date</span><div>8 November 2026</div><span>Update channel</span><div class="seg" style="display:inline-flex;width:max-content"><span class="on">Production</span><span>Test</span></div></div>
+   <div class="upd"><span style="color:var(--accent)">●</span><div style="flex:1"><b>Version 1.1.0 is available</b><div class="hint" style="margin:2px 0 0">Better reconnect, 4×4 grid</div></div><span class="btn p">Update now</span></div>
+   <div style="margin-top:14px;display:flex;gap:10px"><span class="btn s">Check for updates</span><span class="btn s">Release notes</span></div>
+  </div>
+  <div class="card" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px">
+   <div style="color:var(--text-muted)">Developed by</div>
+   <img src="assets/rhis-logo-wit.svg" style="width:300px" alt="RHIS">
+   <div style="color:var(--accent)">rhis.nl</div>
+   <div class="hint">© 2026 RHIS · CamView uses LibVLC (LGPL)</div>
+  </div>
+ </div>
+</div></div></div>
+</body></html>
