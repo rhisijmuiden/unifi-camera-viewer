@@ -10,9 +10,21 @@ public partial class App : Application
     /// <summary>One LibVLC instance shared by all camera tiles.</summary>
     public static LibVLC Vlc { get; private set; } = null!;
 
+    private static Mutex? _singleInstance;
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // One CamView per user: a second start brings the running window to the front instead
+        // of opening every stream twice.
+        _singleInstance = new Mutex(true, @"Local\RHIS.CamView", out var isFirst);
+        if (!isFirst)
+        {
+            NativeMethods.ActivateExistingInstance();
+            Shutdown();
+            return;
+        }
 
         DispatcherUnhandledException += (_, args) =>
         {
@@ -36,6 +48,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         Vlc?.Dispose();
+        _singleInstance?.Dispose();
         base.OnExit(e);
     }
 }

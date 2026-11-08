@@ -18,6 +18,8 @@ public partial class MainWindow : Window
         InitializeComponent();
         ApplyBranding();
         SettingsService.Changed += ApplyBranding;
+        SourceInitialized += (_, _) => NativeMethods.SetDarkTitleBar(this, ThemeService.IsDark);
+        ThemeService.Changed += dark => NativeMethods.SetDarkTitleBar(this, dark);
         NavCameras.IsChecked = true;
 
         Loaded += async (_, _) =>
@@ -32,6 +34,7 @@ public partial class MainWindow : Window
     {
         var company = SettingsService.Current.CompanyName.Trim();
         CompanyText.Text = company.Length > 0 ? company : "CamView";
+        ProductText.Visibility = company.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
         Title = company.Length > 0 ? $"CamView · {company}" : "CamView";
     }
 
