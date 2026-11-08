@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <ApplicationIcon>Assets\camview.ico</ApplicationIcon>
+    <AssemblyName>CamView</AssemblyName>
+    <RootNamespace>CamView</RootNamespace>
+    <Product>CamView</Product>
+    <Company>RHIS</Company>
+    <Copyright>© RHIS</Copyright>
+    <!-- Overwritten by CI: -p:Version=1.0.<run> -p:Channel=production|test -->
+    <Version>0.0.1</Version>
+    <Channel>dev</Channel>
+    <VlcWindowsX86Enabled>false</VlcWindowsX86Enabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>Channel</_Parameter1>
+      <_Parameter2>$(Channel)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibVLCSharp.WPF" Version="3.9.1" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\*.png" />
+    <Resource Include="Assets\camview.ico" />
+  </ItemGroup>
+
+</Project>

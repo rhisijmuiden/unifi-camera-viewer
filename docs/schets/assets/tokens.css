@@ -1,0 +1,48 @@
+/*
+ * CamView design tokens.
+ * Platte, rustige stijl voor een camera-viewer: donker als standaard
+ * (beeld springt eruit), licht als alternatief. Eén accent: Lens (teal).
+ */
+:root, :root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0D0F12;            /* achter de videotegels */
+  --sidebar: #121519;       /* menu links */
+  --panel: #181C21;         /* kaarten, dialogen */
+  --panel-2: #20252C;       /* hover, invoervelden */
+  --line: #2A3038;          /* randen van 1px */
+  --text: #E9ECF1;
+  --text-muted: #98A2B3;
+  --accent: #14B8A6;        /* Lens: actief menu, primaire knop, focus */
+  --accent-hover: #2DD4BF;
+  --on-accent: #0D0F12;     /* tekst op accent (contrast 8.6:1) */
+  --live: #F04438;          /* LIVE-badge, opname */
+  --ok: #32D583;
+  --warn: #FDB022;
+  --error: #F97066;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F4F6F8;
+  --sidebar: #FFFFFF;
+  --panel: #FFFFFF;
+  --panel-2: #EEF1F4;
+  --line: #DDE2E8;
+  --text: #101418;
+  --text-muted: #5A6472;
+  --accent: #0F8C80;
+  --accent-hover: #0B7369;
+  --on-accent: #FFFFFF;     /* contrast 4.5:1, gebruik vet */
+  --live: #D92D20;
+  --ok: #079455;
+  --warn: #B54708;
+  --error: #D92D20;
+}
+:root {
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --radius: 6px;            /* knoppen, velden, tegels */
+  --radius-lg: 10px;        /* dialogen, kaarten */
+  --space: 8px;             /* grid van 8 */
+  --sidebar-width: 232px;
+  --text-size: 14px;
+}

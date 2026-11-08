@@ -1,0 +1,15 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputName>CamView</OutputName>
+    <Version Condition="'$(Version)' == ''">0.0.1</Version>
+    <!-- Folder with the output of: dotnet publish src/CamView -c Release -o publish -->
+    <PublishDir Condition="'$(PublishDir)' == ''">$(MSBuildThisFileDirectory)..\publish\</PublishDir>
+    <DefineConstants>Version=$(Version);PublishDir=$(PublishDir)</DefineConstants>
+    <!-- Per-user install into %LocalAppData%\Programs: the classic ICE rules expect per-machine layouts. -->
+    <SuppressValidation>true</SuppressValidation>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+  </ItemGroup>
+</Project>

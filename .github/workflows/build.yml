@@ -1,0 +1,59 @@
+name: Build
+
+# main  -> Production release (v1.0.N)
+# test  -> Test pre-release   (v1.0.N-test)
+# PRs   -> build only, MSI as workflow artifact
+on:
+  push:
+    branches: [main, test]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Version and channel
+        shell: pwsh
+        run: |
+          $base = (Get-Content VERSION).Trim()
+          $version = "$base.${{ github.run_number }}"
+          $branch = '${{ github.ref_name }}'
+          $channel = switch ($branch) { 'main' { 'production' } 'test' { 'test' } default { 'dev' } }
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "CHANNEL=$channel" >> $env:GITHUB_ENV
+          Write-Host "CamView $version ($channel)"
+
+      - name: Publish app
+        run: dotnet publish src/CamView/CamView.csproj -c Release -o publish -p:Version=${{ env.VERSION }} -p:Channel=${{ env.CHANNEL }}
+
+      - name: Build MSI
+        shell: pwsh
+        run: |
+          dotnet build installer/CamView.Installer.wixproj -c Release -o out -p:Version=$env:VERSION "-p:PublishDir=$env:GITHUB_WORKSPACE\publish\"
+          Move-Item out\CamView.msi "out\CamView-$env:VERSION.msi"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CamView-${{ env.VERSION }}-${{ env.CHANNEL }}
+          path: out/CamView-${{ env.VERSION }}.msi
+
+      - name: Release
+        if: github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'test')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}${{ env.CHANNEL == 'test' && '-test' || '' }}
+          name: CamView ${{ env.VERSION }}${{ env.CHANNEL == 'test' && ' (test)' || '' }}
+          prerelease: ${{ env.CHANNEL == 'test' }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          files: out/CamView-${{ env.VERSION }}.msi
