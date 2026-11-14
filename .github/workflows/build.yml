@@ -14,7 +14,9 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    # Pushes and manual runs build on the self-hosted Windows runner; pull requests (possibly from
+    # forks) stay on a GitHub-hosted runner so outside code never runs on the self-hosted machine.
+    runs-on: ${{ github.event_name == 'pull_request' && 'windows-latest' || fromJSON('["self-hosted","windows","msi"]') }}
     steps:
       - uses: actions/checkout@v4
 
